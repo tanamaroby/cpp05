@@ -7,7 +7,7 @@
 RobotomyRequestForm::RobotomyRequestForm(const std::string &target)
     : AForm("RobotomyRequestForm", 72, 45), _target(target)
 {
-  std::srand(std::time(nullptr)); // Seed for randomization
+  std::srand(std::time(NULL)); // Seed for randomization
 }
 
 // Copy constructor

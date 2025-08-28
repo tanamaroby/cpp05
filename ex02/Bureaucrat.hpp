@@ -5,7 +5,7 @@
 #include <iostream>
 #include <exception>
 
-class Form; // Forward declaration to avoid circular dependency
+class AForm;
 
 class Bureaucrat
 {
@@ -41,8 +41,8 @@ public:
     virtual const char *what() const throw();
   };
 
-  // In Bureaucrat class declaration
-  void signForm(Form &form) const;
+  void signForm(AForm &form) const;
+  void executeForm(AForm const &form) const;
 };
 
 // Stream insertion operator

@@ -32,7 +32,7 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 // Private helper function to perform the actual action
 void ShrubberyCreationForm::_action() const
 {
-  std::ofstream ofs(_target + "_shrubbery");
+  std::ofstream ofs((_target + "_shrubbery").c_str());
   if (!ofs)
     throw std::ios_base::failure("Failed to open file");
 

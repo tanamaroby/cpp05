@@ -1,5 +1,5 @@
 #include "Bureaucrat.hpp"
-#include "Form.hpp" // Include Form header for signForm method
+#include "AForm.hpp"
 
 // Constructor
 Bureaucrat::Bureaucrat(const std::string &name, int grade) : _name(name), _grade(grade)
@@ -72,7 +72,7 @@ std::ostream &operator<<(std::ostream &os, const Bureaucrat &b)
   return os;
 }
 
-void Bureaucrat::signForm(Form &form) const
+void Bureaucrat::signForm(AForm &form) const
 {
   try
   {
@@ -82,6 +82,20 @@ void Bureaucrat::signForm(Form &form) const
   catch (std::exception &e)
   {
     std::cout << _name << " couldn't sign " << form.getName()
+              << " because " << e.what() << std::endl;
+  }
+}
+
+void Bureaucrat::executeForm(AForm const &form) const
+{
+  try
+  {
+    form.execute(*this);
+    std::cout << getName() << " executed " << form.getName() << std::endl;
+  }
+  catch (std::exception &e)
+  {
+    std::cout << getName() << " couldn’t execute " << form.getName()
               << " because " << e.what() << std::endl;
   }
 }
