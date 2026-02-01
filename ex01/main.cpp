@@ -58,6 +58,8 @@ int main()
 
   // Charlie tries to sign high-grade form
   Form topSecret("TopSecret", 5, 2);
+  std::cout << topSecret << std::endl
+            << std::endl;
   charlie.signForm(topSecret);
 
   // Bob tries to sign high-grade form, should fail
