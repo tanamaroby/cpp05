@@ -3,7 +3,7 @@ CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
 # Executable name
-NAME = bureaucrat_forms_exec
+NAME = bureaucrat_interns
 
 # Source files
 SRCS = main.cpp \
@@ -11,7 +11,8 @@ SRCS = main.cpp \
        AForm.cpp \
        ShrubberyCreationForm.cpp \
        RobotomyRequestForm.cpp \
-       PresidentialPardonForm.cpp
+       PresidentialPardonForm.cpp \
+       Intern.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
