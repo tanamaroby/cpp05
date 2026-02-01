@@ -3,105 +3,58 @@
 #include "ShrubberyCreationForm.hpp"
 #include "RobotomyRequestForm.hpp"
 #include "PresidentialPardonForm.hpp"
-#include <iostream>
-#include <exception>
-
-#define RESET "\033[0m"
-#define RED "\033[31m"
-#define GREEN "\033[32m"
-#define YELLOW "\033[33m"
-#define CYAN "\033[36m"
-
-void printTitle(const std::string &title)
-{
-  std::cout << CYAN << "=== " << title << " ===" << RESET << std::endl;
-}
+#include "Intern.hpp"
 
 int main()
 {
-  printTitle("Exercise 02: Robust Testing of Bureaucrat & Forms");
+  std::cout << "\n--- TEST: Intern Creating Forms ---" << std::endl;
 
-  Bureaucrat alice("Alice", 1);
-  Bureaucrat bob("Bob", 70);
-  Bureaucrat charlie("Charlie", 150);
+  Intern someRandomIntern;
+  AForm *rrf;
+  AForm *scf;
+  AForm *ppf;
+  AForm *unknown;
 
-  ShrubberyCreationForm shrubbery("home");
-  RobotomyRequestForm robotomy("Bender");
-  PresidentialPardonForm pardon("Marvin");
+  // Test 1: Robotomy Request
+  rrf = someRandomIntern.makeForm("robotomy request", "Bender");
 
-  // Print initial form states
-  std::cout << shrubbery << std::endl;
-  std::cout << robotomy << std::endl;
-  std::cout << pardon << std::endl;
+  // Test 2: Shrubbery Creation
+  scf = someRandomIntern.makeForm("shrubbery creation", "Home");
 
-  // Testing signing forms with various bureaucrats
-  printTitle("Signing Forms");
+  // Test 3: Presidential Pardon
+  ppf = someRandomIntern.makeForm("presidential pardon", "Alice");
 
-  bob.signForm(shrubbery);    // Should succeed (grade 70 vs 145)
-  charlie.signForm(robotomy); // Should fail (grade 150 > 72)
-  alice.signForm(pardon);     // Should succeed (grade 1 vs 25)
-  alice.signForm(robotomy);   // Should succeed (grade 1 vs 25)
+  // Test 4: Unknown Form
+  unknown = someRandomIntern.makeForm("unknown form", "Nobody");
 
-  std::cout << shrubbery << std::endl;
-  std::cout << robotomy << std::endl;
-  std::cout << pardon << std::endl;
+  std::cout << "\n--- TEST: Bureaucrat Signing and Executing ---" << std::endl;
 
-  // Robust test: try signing multiple times
-  bob.signForm(shrubbery); // Already signed, should just acknowledge
-  alice.signForm(pardon);  // Already signed
+  Bureaucrat boss("Boss", 1);
 
-  printTitle("Executing Forms");
-
-  // Execute each form with different bureaucrats
-
-  // Shrubbery by Bob (grade 70) - should succeed (exec grade 137)
-  bob.executeForm(shrubbery);
-
-  // Robotomy by Bob (grade 70) - should fail: insufficient exec grade (45)
-  bob.executeForm(robotomy);
-
-  // Robotomy by Alice (grade 1) - should succeed with 50% success/failure
-  alice.executeForm(robotomy);
-
-  // Pardon by Alice (grade 1) - should succeed
-  alice.executeForm(pardon);
-
-  // Executing unsigned form to test exception handling
-  ShrubberyCreationForm unsignedForm("unsigned_home");
-  alice.executeForm(unsignedForm); // Should print error about not signed
-
-  printTitle("Boundary Condition Tests");
-
-  try
+  if (rrf)
   {
-    Bureaucrat tooHigh("TooHigh", 0); // Should throw GradeTooHighException
-  }
-  catch (std::exception &e)
-  {
-    std::cout << RED << "Exception caught: " << e.what() << RESET << std::endl;
+    boss.signForm(*rrf);
+    boss.executeForm(*rrf);
+    delete rrf;
   }
 
-  try
+  if (scf)
   {
-    Bureaucrat tooLow("TooLow", 151); // Should throw GradeTooLowException
-  }
-  catch (std::exception &e)
-  {
-    std::cout << RED << "Exception caught: " << e.what() << RESET << std::endl;
+    boss.signForm(*scf);
+    boss.executeForm(*scf);
+    delete scf;
   }
 
-  try
+  if (ppf)
   {
-    ShrubberyCreationForm invalidForm("invalid");
-    AForm &formRef = invalidForm;
-    formRef.beSigned(Bureaucrat("LowGrade", 150)); // Should throw GradeTooLowException
-  }
-  catch (std::exception &e)
-  {
-    std::cout << RED << "Exception caught while signing: " << e.what() << RESET << std::endl;
+    boss.signForm(*ppf);
+    boss.executeForm(*ppf);
+    delete ppf;
   }
 
-  printTitle("All tests completed successfully!");
+  // unknown should be NULL, so we don't delete it
+  if (unknown)
+    delete unknown;
 
-  return 0;
+  return (0);
 }
